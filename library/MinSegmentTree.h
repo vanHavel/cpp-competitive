@@ -59,7 +59,7 @@ public:
         build(1, 0, n-1);
     }
 
-    int rmq(int i, int j) {
+    int rangeMinimumQuery(int i, int j) {
         return rmq(1, 0, n-1, i, j);
     }
 
