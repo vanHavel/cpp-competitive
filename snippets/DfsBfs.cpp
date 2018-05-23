@@ -9,7 +9,6 @@
 
 // visited nodes
 vi visited;
-
 // adjacency list
 vvi adjList;
 
@@ -40,4 +39,11 @@ void bfs(int v) {
             }
         }
     }
+}
+
+int main() {
+    int n = (int) adjList.size();
+    visited.assign(n, 0);
+    dfs(0);
+    // bfs(0);
 }
