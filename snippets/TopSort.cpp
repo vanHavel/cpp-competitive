@@ -28,10 +28,12 @@ void topSortDfs(int v) {
 
 int main() {
     int n = (int) adjList.size();
-    visited.assign(n, 0);
+    visited.assign(n, UNVISITED);
+    topSort.clear();
     REP(i,n) {
         if (visited[i] == UNVISITED) {
             topSortDfs(i);
         }
     }
+    std::reverse(topSort.begin(), topSort.end());
 }
