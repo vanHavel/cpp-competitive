@@ -7,13 +7,12 @@
 
 #include "Prelude.h"
 
-#define UNVISITED -1
-
 class Bridges {
 private:
+    const int UNVISITED = -1;
+
     vi articulationVertex, visitCounter, lowestReachable, parents;
-    std::set<ii> bridges;
-    std::set<int> articulationPoints;
+    vii bridges;
     vvi adjList;
     int dfsCounter, dfsRoot, rootChildren;
 
@@ -30,7 +29,7 @@ private:
                 }
                 if (lowestReachable[u] > visitCounter[v]) {
                     auto edge = std::make_pair(v, u);
-                    bridges.insert({edge});
+                    bridges.push_back(edge);
                 }
                 lowestReachable[v] = std::min(lowestReachable[v], lowestReachable[u]);
             }
@@ -48,8 +47,7 @@ public:
         lowestReachable.assign(n, 0);
         parents.assign(n, 0);
         articulationVertex.assign(n, 0);
-        bridges = std::set<ii>();
-        articulationPoints = std::set<int>();
+        bridges = vii();
         REP(i, n) {
             if (visitCounter[i] == UNVISITED) {
                 dfsRoot = i;
@@ -64,7 +62,7 @@ public:
         return articulationVertex;
     }
 
-    std::set<ii> getBridges() {
+    vii getBridges() {
         return bridges;
     }
 };
