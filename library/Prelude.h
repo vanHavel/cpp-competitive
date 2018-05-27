@@ -18,13 +18,14 @@
 #include <string>
 #include <sstream>
 
-typedef long long ll;
-
 typedef std::pair<int, int> ii;
 typedef std::vector<int> vi;
 typedef std::vector<ii> vii;
 typedef std::vector<vi> vvi;
 typedef std::vector<vii> vvii;
+
+typedef long long ll;
+typedef std::vector<ll> vll;
 
 typedef std::vector<char> vc;
 typedef std::vector<std::vector<char>> vvc;
