@@ -30,9 +30,11 @@ typedef std::vector<ll> vll;
 typedef std::vector<char> vc;
 typedef std::vector<std::vector<char>> vvc;
 
+typedef std::string ss;
+
 typedef std::vector<std::pair<int, ii>> EdgeList;
 
 #define REP(i,n) for(int i=0;i<n;++i)
 #define FOREACH(it,a) for(auto it=a.begin(); it != a.end(); ++it)
 
-#endif PRELUDE_H
+#endif //PRELUDE_H
