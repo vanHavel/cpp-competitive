@@ -5,6 +5,8 @@
 #ifndef PRELUDE_H
 #define PRELUDE_H
 
+#define M_PI 3.14159265358979323846
+#define EPS 1e-9
 
 #include <algorithm>
 #include <cmath>
@@ -27,6 +29,7 @@ typedef std::vector<vi> vvi;
 typedef std::vector<vii> vvii;
 
 typedef long long ll;
+typedef long double ld;
 typedef std::vector<ll> vll;
 
 typedef std::vector<char> vc;

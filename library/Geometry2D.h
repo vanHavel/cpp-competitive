@@ -9,9 +9,6 @@
 #include <stdexcept>
 #include "Prelude.h"
 
-#define EPS 1e-9
-#define M_PI 3.14159265358979323846
-
 // 2d point struct
 struct point {
     double x,y;
@@ -379,7 +376,7 @@ bool angleComparator(point pivot, point a, point b) {
     return (atan2(d1y, d1x) - atan2(d2y, d2x)) < 0;
 }
 
-// compute convex hull of polygon using graham scan
+// compute convex hull in ccw order of polygon using graham scan
 polygon convexHull(polygon p) {
     int n = p.size();
     if (n <= 3) { return p; }
@@ -397,7 +394,7 @@ polygon convexHull(polygon p) {
     point pivot = p[0];
 
     // sort points by angle to pivot
-    std::sort(++p.begin(), p.end(), [](point a, point b){ angleComparator(pivot, a, b); });
+    std::sort(++p.begin(), p.end(), [pivot](point a, point b) -> bool { return angleComparator(pivot, a, b); });
 
     // assemble convex hull
     polygon s;
