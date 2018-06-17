@@ -7,8 +7,10 @@
 
 #include <cmath>
 #include <stdexcept>
+#include "Prelude.h"
 
 #define EPS 1e-9
+#define M_PI 3.14159265358979323846
 
 // 2d point struct
 struct point {
@@ -61,6 +63,9 @@ struct triangle {
         a = _a; b = _b; c = _c;
     }
 };
+
+// polygon as vector of points, last point must be first point
+typedef std::vector<point> polygon;
 
 // euclidian distance
 double distance(point p1,point p2) {
@@ -120,7 +125,7 @@ point intersection(line l1, line l2) {
     if (areParallel(l1, l2)) {
         throw std::invalid_argument("Parallel lines do not intersect");
     }
-    double x = (l2.b * l1.c - l1.b * l2.c) / (l2.a *l1.b - l1.a * l2.b);
+    double x = (l2.b * l1.c - l1.b * l2.c) / (l2.a * l1.b - l1.a * l2.b);
     double y;
     if (fabs(l1.b) > EPS) {
         y = -(l1.a * x + l1.c);
@@ -276,6 +281,140 @@ double segmentArea(circle c, double theta) {
     double chordLen = chordLenth(c, theta);
     double trigArea = heronsFormula(c.radius, c.radius, chordLen);
     return secArea - trigArea;
+}
+
+// polygon perimeter
+double perimeter(polygon p) {
+    double result = 0.0;
+    int n = p.size() - 1;
+    REP(i, n) {
+        result += distance(p[i], p[i+1]);
+    }
+    return result;
+}
+
+// polygon area
+double area(polygon p) {
+    double result = 0.0;
+    int n = p.size() - 1;
+    REP(i, n) {
+        result += (p[i].x * p[i+1].y - p[i+1].x * p[i].y);
+    }
+    return fabs(result) / 2.0;
+}
+
+// check if polygon is convex
+bool isConvex(polygon p) {
+    int n = p.size();
+    if (n <= 3) { return false; }
+    bool isLeft = isCCWOfLine(p[0], p[1], p[2]);
+    for (int i = 1; i < n-1; ++i) {
+        if (isCCWOfLine(p[i], p[i+1], p[i+2 == n ? 1 : i+2]) != isLeft) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// check if point is in polygon
+bool inPolygon(point pt, polygon p) {
+    int n = p.size() - 1;
+    double sum = 0.0;
+    REP(i, n) {
+        if (isCCWOfLine(pt, p[i], p[i+1])) {
+            sum += angle(p[i], pt, p[i+1]);
+        }
+        else {
+            sum -= angle(p[i], pt, p[i+1]);
+        }
+    }
+    return fabs(fabs(sum) - 2*M_PI) < EPS;
+}
+
+// intersect line segment p-q with line r-s
+point intersectSegmentWithLine(point p, point q, point r, point s) {
+    double a = s.y - r.y;
+    double b = r.x - s.x;
+    double c = s.x * r.y - r.x * s.y;
+    double u = fabs(a * p.x + b * p.y + c);
+    double v = fabs(a * q.x + b * q.y + c);
+    double resX = (p.x * v + q.x * u) / (u + v);
+    double resY = (p.y * v + q.y * u) / (u + v);
+    return point(resX, resY);
+}
+
+// cut polygon along line a-> b and return the polygon left of the line
+polygon cutPolygon(point a, point b, polygon q) {
+    polygon p;
+    int n = q.size();
+    REP(i, n) {
+        double left1 = cross(b - a, q[i] - a);
+        double left2 = 0.0;
+        if (i != n-1) {
+            left2 = cross(b - a, q[i+1] - a);
+        }
+        if (left1 > -EPS) {
+            p.push_back(q[i]);
+        }
+        if (left1 * left2 < -EPS) {
+            p.push_back(intersectSegmentWithLine(q[i], q[i+1], a, b));
+        }
+    }
+    if (!p.empty() && !(p.back() == p.front())) {
+        auto front = p.front();
+        p.push_back(front);
+    }
+    return p;
+}
+
+// compare angles with respect to pivot
+bool angleComparator(point pivot, point a, point b) {
+    if (colinear(pivot, a, b)) {
+        return distance(pivot, a) < distance(pivot, b);
+    }
+    double d1x = a.x - pivot.x;
+    double d1y = a.y - pivot.y;
+    double d2x = b.x - pivot.x;
+    double d2y = b.y - pivot.y;
+    return (atan2(d1y, d1x) - atan2(d2y, d2x)) < 0;
+}
+
+// compute convex hull of polygon using graham scan
+polygon convexHull(polygon p) {
+    int n = p.size();
+    if (n <= 3) { return p; }
+
+    // find pivot
+    int p0 = 0;
+    for (int i = 1; i < n; ++i) {
+        if (p[i].y < p[p0].y || (p[i].y == p[p0].y && p[i].x > p[p0].x)) {
+            p0 = i;
+        }
+    }
+    point temp = p[0];
+    p[0] = p[p0];
+    p[p0] = temp;
+    point pivot = p[0];
+
+    // sort points by angle to pivot
+    std::sort(++p.begin(), p.end(), [](point a, point b){ angleComparator(pivot, a, b); });
+
+    // assemble convex hull
+    polygon s;
+    s.push_back(p[n-1]);
+    s.push_back(p[0]);
+    s.push_back(p[1]);
+    int i = 2;
+    while (i < n) {
+        int j = s.size() - 1;
+        if (isCCWOfLine(s[j-1], s[j], p[i])) {
+            s.push_back(p[i++]);
+        }
+        else {
+            s.pop_back();
+        }
+    }
+    return s;
 }
 
 #endif //GEOMETRY2D_H
