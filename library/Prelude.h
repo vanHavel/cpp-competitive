@@ -22,18 +22,20 @@
 #include <string>
 #include <sstream>
 
+typedef long long ll;
+typedef long double ld;
+
 typedef std::pair<int, int> ii;
 typedef std::vector<int> vi;
 typedef std::vector<ii> vii;
 typedef std::vector<vi> vvi;
 typedef std::vector<vii> vvii;
 
-typedef long long ll;
-typedef long double ld;
-typedef std::vector<ll> vll;
-
 typedef std::vector<char> vc;
 typedef std::vector<std::vector<char>> vvc;
+
+typedef std::vector<ll> vll;
+typedef std::vector<double> vd;
 
 typedef std::string ss;
 
