@@ -55,4 +55,4 @@ public:
 
 };
 
-#endif UNIONFIND_H
+#endif //UNIONFIND_H
