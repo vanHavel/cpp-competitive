@@ -38,6 +38,7 @@ private:
     }
 public:
     // initialize with size of left partition
+    // adj list has first n entries for left partition
     BipartiteMatching(vvi &_adjList, int _n) {
         adjList = _adjList;
         n = _n;

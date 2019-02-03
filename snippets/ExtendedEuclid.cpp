@@ -21,7 +21,7 @@ void extendedEuclid(int a, int b) {
 
 int modularInverse(int a, int n) {
     extendedEuclid(a, n);
-    return x;
+    return (x + n) % n;
 }
 
 int gcd(int a, int b) {
