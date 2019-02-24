@@ -1,6 +1,7 @@
 #include "Prelude.h"
 #include <random>
 #include <chrono>
+#include <functional>
 
 #ifndef RANDOM_H
 #define RANDOM_H
