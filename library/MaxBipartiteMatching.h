@@ -7,6 +7,7 @@
 
 #include "Prelude.h"
 
+// naive O(n^3) algorithm
 class BipartiteMatching {
 private:
     vi match, visited;
