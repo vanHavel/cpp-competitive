@@ -1,4 +1,4 @@
-#include "../library/prelude.h"
+#include "../library/Prelude.h"
 
 class %ClassName% {
 public:

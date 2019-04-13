@@ -3,9 +3,9 @@
 //
 
 // a * x + b * y = d = gcd(a,b);
-int x, y, d;
+ll x, y, d;
 
-void extendedEuclid(int a, int b) {
+void extendedEuclid(ll a, ll b) {
     if (b == 0) {
         x = 1;
         y = 0;
@@ -13,18 +13,30 @@ void extendedEuclid(int a, int b) {
         return;
     }
     extendedEuclid(b, a % b);
-    int x1 = y;
-    int y1 = x - (a / b) * y;
+    ll x1 = y;
+    ll y1 = x - (a / b) * y;
     x = x1;
     y = y1;
 }
 
-int modularInverse(int a, int n) {
+int modularInverse(ll a, ll n) {
     extendedEuclid(a, n);
     return (x + n) % n;
 }
 
-int gcd(int a, int b) {
+int gcd(ll a, ll b) {
     if (b == 0) { return a; }
     return gcd(b, a % b);
+}
+
+ll crt(ll m1, ll a1, ll m2, ll a2) {
+    extendedEuclid(m1, m2);
+    ll m = m1 * m2;
+    ll part1 = (a1 * m2) % m;
+    part1 = (part1 * y) % m;
+    ll part2 = (a2 * m1) % m;
+    part2 = (part2 * x) % m;
+    ll res = (part1 + part2) % m;
+    res = (res + m) % m;
+    return res;
 }
