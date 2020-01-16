@@ -8,5 +8,3 @@ add_executable(testrunner testrunner/main.cpp ${HEADERS} library/MinSegmentTree.
 
 ADD_DEFINITIONS(-std=c++17)
 ADD_DEFINITIONS(-O3)
-
-#add_executable(test ${TASKS} ${HEADERS} library/MinSegmentTree.h library/SumFenwickTree.h snippets/FloodFill.cpp snippets/DfsBfs.cpp snippets/TopSort.cpp library/Bridges.h)

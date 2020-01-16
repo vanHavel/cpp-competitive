@@ -72,4 +72,4 @@ public:
         return maxFlow;
     }
 };
-#endif MAXFLOW_H
+#endif //MAXFLOW_H

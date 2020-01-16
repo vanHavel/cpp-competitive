@@ -28,6 +28,7 @@ typedef std::pair<double, double> dd;
 typedef std::vector<int> vi;
 typedef std::vector<ii> vii;
 typedef std::vector<vi> vvi;
+typedef std::vector<vvi> vvvi;
 typedef std::vector<vii> vvii;
 
 typedef std::vector<char> vc;
@@ -43,6 +44,7 @@ typedef std::string ss;
 typedef std::vector<ss> vss;
 
 typedef std::set<int> si;
+typedef std::set<ii> sii;
 typedef std::set<ll> sll;
 
 typedef std::map<int, int> mii;
