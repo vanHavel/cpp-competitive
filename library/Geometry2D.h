@@ -20,6 +20,10 @@ struct point {
         return (fabs(x - other.x) < EPS && fabs(y - other.y) < EPS);
     }
 
+    bool operator!= (point other) const {
+        return !(*this == other);
+    }
+
     point operator+ (point other) {
         return point(x + other.x, y + other.y);
     }
