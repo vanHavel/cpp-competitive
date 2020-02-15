@@ -11,6 +11,7 @@ private:
     vdd functions;
     vi ids;
     constexpr static const double INF = 1e20;
+    //constexpr static const ll INF = 1000000000000000000;
     int n;
 
     static double apply(dd function, int x) {
@@ -22,7 +23,7 @@ private:
         bool leftLowerNew = apply(newFunction, left) < apply(functions[index], left);
         bool midLowerNew = apply(newFunction, mid) < apply(functions[index], mid);
         if (midLowerNew) {
-            dd tmpFunc = functions[index];
+            auto tmpFunc = functions[index];
             int tmpId = ids[index];
             functions[index] = newFunction;
             ids[index] = id;
@@ -41,9 +42,9 @@ private:
     std::pair<double, int> getMinimumAndId(int x, int index, int left, int right) {
         int mid = (left + right) / 2;
         if(right - left == 1) {
-            return apply(functions[index], x);
+            return std::make_pair(apply(functions[index], x), ids[index]);
         } else if(x < mid) {
-            double here = apply(functions[index], x);
+            auto here = apply(functions[index], x);
             auto rec = getMinimumAndId(x, 2 * index, left, mid);
             if (rec.first < here) {
                 return rec;
@@ -52,7 +53,7 @@ private:
                 return std::make_pair(here, ids[index]);
             }
         } else {
-            double here = apply(functions[index], x);
+            auto here = apply(functions[index], x);
             auto rec = getMinimumAndId(x, 2 * index + 1, mid, right);
             if (rec.first < here) {
                 return rec;
@@ -67,7 +68,7 @@ public:
     LiChaoTree(int _n) {
         n = _n;
         functions = vdd(4*n, dd(0, INF));
-        ids = vi(n, -1);
+        ids = vi(4*n, -1);
     }
 
     void addLine(dd newFunction, int id) {
@@ -75,11 +76,11 @@ public:
     }
 
     double getMinimum(int x) {
-        getMinimumAndId(x, 1, 0, n).first;
+        return getMinimumAndId(x, 1, 0, n).first;
     }
 
     int getId(int x) {
-        getMinimumAndId(x, 1, 0, n).second;
+        return getMinimumAndId(x, 1, 0, n).second;
     }
 };
 
