@@ -5,7 +5,7 @@
 #ifndef SEGMENTTREE_H
 #define SEGMENTTREE_H
 
-#include "prelude.h"
+#include "Prelude.h"
 
 class MinSegmentTree {
 private:
@@ -69,4 +69,4 @@ public:
     }
 };
 
-#endif SEGMENTTREE_H
+#endif //SEGMENTTREE_H
