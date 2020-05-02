@@ -10,9 +10,19 @@
 class Fraction {
 public:
     ll nom, denom;
+    friend bool operator< (const Fraction &lhs, const Fraction &rhs);
+    friend bool operator> (const Fraction &lhs, const Fraction &rhs);
+    friend bool operator<= (const Fraction &lhs, const Fraction &rhs);
+    friend bool operator>= (const Fraction &lhs, const Fraction &rhs);
+    friend bool operator== (const Fraction &lhs, const Fraction &rhs);
+    friend bool operator!= (const Fraction &lhs, const Fraction &rhs);
+
+    friend Fraction operator+ (const Fraction &lhs, const Fraction &rhs);
+    friend Fraction operator- (const Fraction &lhs, const Fraction &rhs);
+    friend Fraction operator* (const Fraction &lhs, const Fraction &rhs);
+    friend Fraction operator/ (const Fraction &lhs, const Fraction &rhs);
 
     Fraction(ll _nom, ll _denom) {
-        assert(denom != 0);
         nom = _nom;
         denom = _denom;
     }
@@ -26,58 +36,36 @@ public:
         return Fraction(nom / div, denom / div);
     }
 
-    Fraction operator+(Fraction &rhs) {
-        return Fraction(nom * rhs.denom + denom * rhs.nom, denom * rhs.denom);
+    ll truncated() {
+        return nom / denom;
     }
 
-    Fraction operator*(Fraction &rhs) {
-        return Fraction(nom * rhs.nom, denom * rhs.denom);
+    Fraction roundedDown(ll targetDenom) {
+        return Fraction(targetDenom * nom / denom, targetDenom);
     }
 
-    Fraction operator-(Fraction &rhs) {
-        return Fraction(nom * rhs.denom - denom * rhs.nom, denom * rhs.denom);
-    }
-
-    Fraction operator+=(Fraction &rhs) {
+    Fraction& operator+=(Fraction &rhs) {
         nom = nom * rhs.denom + denom * rhs.nom;
         denom *= rhs.denom;
         return *this;
     }
 
-    Fraction operator*=(Fraction &rhs) {
+    Fraction& operator*=(Fraction &rhs) {
         nom *= rhs.nom;
         denom *= rhs.denom;
         return *this;
     }
 
-    Fraction operator-=(Fraction &rhs) {
+    Fraction& operator-=(Fraction &rhs) {
         nom = nom * rhs.denom - denom * rhs.nom;
         denom *= rhs.denom;
         return *this;
     }
 
-    bool operator==(Fraction &rhs) {
-        return nom * rhs.denom == denom * rhs.nom;
-    }
-
-    bool operator!=(Fraction &rhs) {
-        return *this != rhs;
-    }
-
-    bool operator<(Fraction &rhs) {
-        return nom * rhs.denom < denom * rhs.nom;
-    }
-
-    bool operator>(Fraction &rhs) {
-        return rhs < *this;
-    }
-
-    bool operator<=(Fraction &rhs) {
-        return *this < rhs || *this == rhs;
-    }
-
-    bool operator>=(Fraction &rhs) {
-        return rhs <= *this;
+    Fraction& operator/=(Fraction &rhs) {
+        nom *= rhs.denom;
+        denom *= rhs.nom;
+        return *this;
     }
 
     static ll gcd(ll a, ll b) {
@@ -86,5 +74,37 @@ public:
     }
 
 };
+
+bool operator<(const Fraction &lhs, const Fraction &rhs) {
+    return lhs.nom * rhs.denom < lhs.denom * rhs.nom;
+}
+bool operator>(const Fraction &lhs, const Fraction &rhs) {
+    return lhs.nom * rhs.denom > lhs.denom * rhs.nom;
+}
+bool operator<=(const Fraction &lhs, const Fraction &rhs) {
+    return lhs.nom * rhs.denom <= lhs.denom * rhs.nom;
+}
+bool operator>=(const Fraction &lhs, const Fraction &rhs) {
+    return lhs.nom * rhs.denom >= lhs.denom * rhs.nom;
+}
+bool operator==(const Fraction &lhs, const Fraction &rhs) {
+    return lhs.nom * rhs.denom == lhs.denom * rhs.nom;
+}
+bool operator!=(const Fraction &lhs, const Fraction &rhs) {
+    return lhs.nom * rhs.denom != lhs.denom * rhs.nom;
+}
+
+Fraction operator+(const Fraction &lhs, const Fraction &rhs) {
+    return Fraction(lhs.nom * rhs.denom + lhs.denom * rhs.nom, lhs.denom * rhs.denom);
+}
+Fraction operator*(const Fraction &lhs, const Fraction &rhs) {
+    return Fraction(lhs.nom * rhs.nom, lhs.denom * rhs.denom);
+}
+Fraction operator/(const Fraction &lhs, const Fraction &rhs) {
+    return Fraction(lhs.nom * rhs.denom, lhs.denom * rhs.nom);
+}
+Fraction operator-(const Fraction &lhs, const Fraction &rhs) {
+    return Fraction(lhs.nom * rhs.denom - lhs.denom * rhs.nom, lhs.denom * rhs.denom);
+}
 
 #endif //FRACTION_H

@@ -31,6 +31,8 @@ typedef std::vector<vi> vvi;
 typedef std::vector<vvi> vvvi;
 typedef std::vector<vii> vvii;
 
+typedef std::vector<bool> vb;
+
 typedef std::vector<char> vc;
 typedef std::vector<std::vector<char>> vvc;
 
@@ -42,6 +44,7 @@ typedef std::vector<dd> vdd;
 
 typedef std::string ss;
 typedef std::vector<ss> vss;
+typedef std::vector<vss> vvss;
 
 typedef std::set<int> si;
 typedef std::set<ii> sii;
