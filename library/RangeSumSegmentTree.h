@@ -4,6 +4,7 @@
 
 #include "prelude.h"
 
+// A sum segment tree supporting lazy range updates
 class RangeSumSegmentTree {
 private:
     vll st, A, lazy;
