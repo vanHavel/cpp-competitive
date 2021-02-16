@@ -380,42 +380,31 @@ bool angleComparator(point pivot, point a, point b) {
     return (atan2(d1y, d1x) - atan2(d2y, d2x)) < 0;
 }
 
-// compute convex hull in ccw order of polygon using graham scan
+// compute convex hull in ccw order of polygon using monotone chain
 polygon convexHull(polygon p) {
     int n = p.size();
-    if (n <= 3) { return p; }
-
-    // find pivot
-    int p0 = 0;
-    for (int i = 1; i < n; ++i) {
-        if (p[i].y < p[p0].y || (p[i].y == p[p0].y && p[i].x > p[p0].x)) {
-            p0 = i;
+    if (n == 1) { return p; }
+    int k = 0;
+    polygon hull(2*n);
+    std::sort(p.begin(), p.end(), [](point p1, point p2) {
+        return p1.x < p2.x || (p1.x == p2.x && p1.y < p2.y);
+    });
+    REP(i, n) {
+        while (k >= 2 && !isCCWOfLine(hull[k-2], hull[k-1], p[i])) {
+            k--;
         }
+        hull[k++] = p[i];
     }
-    point temp = p[0];
-    p[0] = p[p0];
-    p[p0] = temp;
-    point pivot = p[0];
-
-    // sort points by angle to pivot
-    std::sort(++p.begin(), p.end(), [pivot](point a, point b) -> bool { return angleComparator(pivot, a, b); });
-
-    // assemble convex hull
-    polygon s;
-    s.push_back(p[n-1]);
-    s.push_back(p[0]);
-    s.push_back(p[1]);
-    int i = 2;
-    while (i < n) {
-        int j = s.size() - 1;
-        if (isCCWOfLine(s[j-1], s[j], p[i])) {
-            s.push_back(p[i++]);
+    int t = k+1;
+    for (int i = n-2; i >= 0; --i) {
+        while (k >= t && !isCCWOfLine(hull[k-2], hull[k-1], p[i])) {
+            k--;
         }
-        else {
-            s.pop_back();
-        }
+        hull[k++] = p[i];
     }
-    return s;
+    hull.resize(k);
+    hull.pop_back();
+    return hull;
 }
 
 #endif //GEOMETRY2D_H

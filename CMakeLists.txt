@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.4)
+cmake_minimum_required(VERSION 3.0.0)
 project(jhelper-example-project)
 
 file(GLOB TASKS "tasks/*.cpp")
@@ -8,3 +8,4 @@ add_executable(testrunner testrunner/main.cpp ${HEADERS} library/MinSegmentTree.
 
 ADD_DEFINITIONS(-std=c++17)
 ADD_DEFINITIONS(-O3)
+
