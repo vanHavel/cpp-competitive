@@ -6,8 +6,9 @@
 #define MAXBIPARTITEMATCHING_H
 
 #include "Prelude.h"
+#include "Random.h"
 
-// naive O(n^3) algorithm
+// naive O(VE) algorithm
 class BipartiteMatching {
 private:
     vi match, visited;
@@ -31,10 +32,25 @@ private:
 
     void computeMaxMatching() {
         maxMatching = 0;
+        auto rng = getMt();
+        si free;
+        REP(l, n) { free.insert(l); }
         match.assign(n+m, -1);
         REP(l, n) {
+            vi candidates;
+            for (int r : adjList[l]) {
+                if (match[r] == -1) { candidates.push_back(r); }
+            }
+            if (candidates.size() > 0) {
+                maxMatching++;
+                free.erase(l);
+                auto a = rng() % candidates.size();
+                match[candidates[a]] = l;
+            }
+        }
+        FOREACH(it, free) {
             visited.assign(n, 0);
-            maxMatching += augment(l);
+            maxMatching += augment(*it);
         }
     }
 public:
@@ -54,4 +70,4 @@ public:
     }
 };
 
-#endif MAXBIPARTITEMATCHING_H
+#endif //MAXBIPARTITEMATCHING_H

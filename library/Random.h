@@ -12,8 +12,8 @@ std::mt19937 getMt() {
     return rng;
 }
 
-// safely generates random ints in range [min, max]
-auto rangeMt(int min, int max) {
+// safely generates random ints in range [min, max] (using application operator)
+std::function<int ()> intRangeMt(int min, int max) {
     auto rng = std::bind(
             std::uniform_int_distribution<int>(min, max),
             std::mt19937(std::chrono::steady_clock::now().time_since_epoch().count())
