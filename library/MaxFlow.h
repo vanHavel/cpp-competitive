@@ -7,69 +7,83 @@
 
 #include "Prelude.h"
 
+// target, capacity and flow
+typedef std::tuple<int, ll, ll> edge;
+
+// O(V^2E) Dinic algorithm
 class MaxFlow {
 private:
-    // adjacency matrix of residuals
-    vvi residuals;
-    vi parents;
-    int n, maxFlow, augmentation, source, sink;
-    const int BILLION = 1000000000;
+    int n;
+    const static ll INF = 1e18;
+    std::vector<edge> edgeList;
+    // maps node index to list of edge indices in edgeList
+    vvi adjacencyList;
+    vi dist;
+    // last used neighbor ids in DFS of level graph
+    vi last;
+    // previous node and used edge index for BFS
+    vii p;
 
-    void computeMaxFlow() {
-        maxFlow = 0;
-        while (true) {
-            augmentation = 0;
-            vi distances(n, BILLION); distances[source] = 0;
-            std::queue<int> q; q.push(source);
-            parents.assign(n, -1);
-
-            while (!q.empty()) {
-                int v = q.front(); q.pop();
-                if (v == sink) { break; }
-                REP(u, n) {
-                    if (residuals[v][u] > 0 && distances[u] == BILLION) {
-                        distances[u] = distances[v] + 1;
-                        q.push(u);
-                        parents[u] = v;
-                    }
+    bool BFS(int s, int t) {
+        dist.assign(n, -1);
+        dist[s] = 0;
+        std::queue<int> q({s});
+        p.assign(n, {-1, -1});
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            if (u == t) { break; }
+            for (auto idx: adjacencyList[u]) {
+                auto [v, cap, flow] = edgeList[idx];
+                if (cap - flow > 0 && dist[v] == -1) {
+                    dist[v] = dist[u]+1;
+                    q.push(v);
+                    p[v] = {u, idx};
                 }
             }
-
-            augment(sink, BILLION);
-            if (augmentation == 0) { break; }
-            maxFlow += augmentation;
         }
+        // return false when sink no longer reachable
+        return dist[t] != -1;
     }
 
-    void augment(int v, int minEdge) {
-        if (v == source) {
-            augmentation = minEdge;
-            return;
+    ll DFS(int u, int t, ll f = INF) {
+        if (u == t || f == 0) { return f; }
+        for (int i = last[u]; i < adjacencyList[u].size(); i++, last[u]++) {
+            auto &[v, cap, flow] = edgeList[adjacencyList[u][i]];
+            if (dist[v] != dist[u]+1) { continue; }
+            if (ll pushed = DFS(v, t, std::min(f, cap-flow))) {
+                flow += pushed;
+                auto &rflow = std::get<2>(edgeList[adjacencyList[u][i]^1]);
+                rflow -= pushed;
+                return pushed;
+            }
         }
-        else if (parents[v] != -1) {
-            augment(parents[v], std::min(minEdge, residuals[parents[v]][v]));
-            residuals[parents[v]][v] -= augmentation;
-            residuals[v][parents[v]] += augmentation;
-        }
+        return 0;
     }
 
 public:
-    MaxFlow(vvi &capacities, int _source, int _sink) {
-        n = capacities.size();
-        residuals = vvi(n);
-        REP(i,n) {
-            residuals[i] = vi(n);
-            REP(j,n) {
-                residuals[i][j] = capacities[i][j];
-            }
-        }
-        source = _source;
-        sink = _sink;
-        computeMaxFlow();
+    MaxFlow(int nodes) {
+        n = nodes;
+        edgeList.clear();
+        adjacencyList.assign(n, vi());
     }
 
-    int getMaxFlow() {
-        return maxFlow;
+    void add_edge(int u, int v, ll w, bool directed = true) {
+        edgeList.emplace_back(v, w, 0);
+        adjacencyList[u].push_back(edgeList.size()-1);
+        edgeList.emplace_back(u, directed ? 0 : w, 0);
+        adjacencyList[v].push_back(edgeList.size()-1);
+    }
+
+    ll compute(int s, int t) {
+        ll mf = 0;
+        while (BFS(s, t)) {
+            last.assign(n, 0);
+            while (ll f = DFS(s, t)) {
+                mf += f;
+            }
+        }
+        return mf;
     }
 };
 #endif //MAXFLOW_H
