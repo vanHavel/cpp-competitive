@@ -8,7 +8,7 @@
 #include "Prelude.h"
 #include "Random.h"
 
-// naive O(VE) algorithm
+// naive O(VE) algorithm with greedy preprocessing
 class BipartiteMatching {
 private:
     vi match, visited;
@@ -65,8 +65,18 @@ public:
         computeMaxMatching();
     }
 
-    int getMaxMatchingSize() {
+    int getMatchingSize() {
         return maxMatching;
+    }
+
+    vii getMatching() {
+        vii matching;
+        for (int i = n; i < n + m; ++i) {
+            if (match[i] != -1) {
+                matching.push_back(ii(match[i], i));
+            }
+        }
+        return matching;
     }
 };
 

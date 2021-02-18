@@ -7,11 +7,11 @@
 
 #include "Prelude.h"
 
-class Hierholzer {
+class EulerPath {
 private:
     vvi g;
 public:
-    Hierholzer(vvi const& graph) {
+    EulerPath(vvi const& graph) {
         g = graph;
     }
     vi computeEulerPath(int s) {
