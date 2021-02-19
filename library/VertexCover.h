@@ -9,7 +9,7 @@
 
 class BipartiteVertexCover {
 private:
-    vi mvc;
+    vi mvc, is;
 public:
     // initialize with edges and size of first partition
     BipartiteVertexCover(vvi adjList, int n) {
@@ -43,14 +43,21 @@ public:
             }
         }
         mvc = vi();
+        is = vi();
         REP(i, n) {
             if (z[i] == 0) {
                 mvc.push_back(i);
+            }
+            else {
+                is.push_back(i);
             }
         }
         REP(i, m) {
             if (z[n+i] == 1) {
                 mvc.push_back(n+i);
+            }
+            else {
+                is.push_back(n+i);
             }
         }
     }
@@ -61,6 +68,14 @@ public:
 
     int getMinVertexCoverSize() {
         return mvc.size();
+    }
+
+    vi getMaxIndependentSet() {
+        return is;
+    }
+
+    int getMaxIndependentSetSize() {
+        return is.size();
     }
 };
 
