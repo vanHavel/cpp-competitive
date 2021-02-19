@@ -14,6 +14,8 @@ typedef std::tuple<int, ll, ll> edge;
 class MaxFlow {
 private:
     int n;
+    ll mf = 0;
+    bool computed = false;
     const static ll INF = 1e18;
     std::vector<edge> edgeList;
     // maps node index to list of edge indices in edgeList
@@ -61,6 +63,17 @@ private:
         return 0;
     }
 
+    void compute(int s, int t) {
+        computed = true;
+        mf = 0;
+        while (BFS(s, t)) {
+            last.assign(n, 0);
+            while (ll f = DFS(s, t)) {
+                mf += f;
+            }
+        }
+    }
+
 public:
     MaxFlow(int nodes) {
         n = nodes;
@@ -75,15 +88,37 @@ public:
         adjacencyList[v].push_back(edgeList.size()-1);
     }
 
-    ll compute(int s, int t) {
-        ll mf = 0;
-        while (BFS(s, t)) {
-            last.assign(n, 0);
-            while (ll f = DFS(s, t)) {
-                mf += f;
-            }
-        }
+    ll getMaxFlow(int s, int t) {
+        if (!computed) { compute(s, t); }
         return mf;
     }
+
+    vii getMinCutEdges(int s, int t) {
+        if (!computed) { compute(s, t); }
+        vii minCut;
+        REP(u, n) {
+            if (dist[u] != -1) {
+                FOREACH(it, adjacencyList[u]) {
+                    auto [v, cap, flow] = edgeList[*it];
+                    if (dist[v] == -1) {
+                        minCut.push_back(ii(u, v));
+                    }
+                }
+            }
+        }
+        return minCut;
+    }
+
+    // get vector of which vertices belong to S(0) and which to T(1)
+    vi getComponentVector(int s, int t) {
+        if (!computed) { compute(s, t); }
+        vi comps(n, 0);
+        REP(u, n) {
+            if (dist[u] == -1) { comps[u] = 1; }
+        }
+        return comps;
+    }
+
+
 };
 #endif //MAXFLOW_H

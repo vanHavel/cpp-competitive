@@ -8,7 +8,7 @@
 #include "Prelude.h"
 #include "UnionFind.h"
 
-// actually computes minimum spanning forest if grapgh is not connected
+// actually computes minimum spanning forest if graph is not connected
 class MST {
 private:
     EdgeList edgeList, mstEdges;

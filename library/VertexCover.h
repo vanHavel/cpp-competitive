@@ -6,10 +6,11 @@
 #define VERTEXCOVER_H
 
 #include "MaxBipartiteMatching.h"
+#include "MaxFlow.h"
 
 class BipartiteVertexCover {
 private:
-    vi mvc, is;
+    vi mvc, mis;
 public:
     // initialize with edges and size of first partition
     BipartiteVertexCover(vvi adjList, int n) {
@@ -43,13 +44,13 @@ public:
             }
         }
         mvc = vi();
-        is = vi();
+        mis = vi();
         REP(i, n) {
             if (z[i] == 0) {
                 mvc.push_back(i);
             }
             else {
-                is.push_back(i);
+                mis.push_back(i);
             }
         }
         REP(i, m) {
@@ -57,7 +58,7 @@ public:
                 mvc.push_back(n+i);
             }
             else {
-                is.push_back(n+i);
+                mis.push_back(n + i);
             }
         }
     }
@@ -71,11 +72,74 @@ public:
     }
 
     vi getMaxIndependentSet() {
-        return is;
+        return mis;
     }
 
     int getMaxIndependentSetSize() {
-        return is.size();
+        return mis.size();
+    }
+};
+
+class BipartiteWeightedVertexCover {
+private:
+    vi mvc, mis;
+    ll mvcw = 0, misw = 0;
+    const static ll INF = 1e18;
+public:
+    BipartiteWeightedVertexCover(vvi adjList, int n, vll w) {
+        int m = adjList.size() - n;
+        MaxFlow mf(n+m+2);
+        int s = n+m, t = n+m+1;
+        REP(i, n+m) {
+            if (i < n) {
+                mf.add_edge(s, i, w[i]);
+            }
+            else {
+                mf.add_edge(i, t, w[i]);
+            }
+        }
+        REP(i, n) {
+            FOREACH(it, adjList[i]) {
+                int j = *it;
+                mf.add_edge(i, j, INF);
+            }
+        }
+        vi comps = mf.getComponentVector(s, t);
+        // Königs theorem to get vertex cover: left vertices in T component and right vertices in S component
+        REP(i, n) {
+            if (comps[i]) {
+                mvc.push_back(i);
+            }
+            else {
+                mis.push_back(i);
+            }
+        }
+        REP(i, m) {
+            if (!comps[n+i]) {
+                mvc.push_back(n+i);
+            }
+            else {
+                mis.push_back(n+i);
+            }
+        }
+        FOREACH(it, mvc) {
+            mvcw += w[*it];
+        }
+        FOREACH(it, mis) {
+            misw += w[*it];
+        }
+    }
+    vi getMinVertexCover() {
+        return mvc;
+    }
+    ll getMinVertexCoverWeight() {
+        return mvcw;
+    }
+    vi getMaxIndependentSet() {
+        return mis;
+    }
+    ll getMaxIndependentSetWeight() {
+        return misw;
     }
 };
 
