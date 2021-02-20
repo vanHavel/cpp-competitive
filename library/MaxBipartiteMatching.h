@@ -7,6 +7,7 @@
 
 #include "Prelude.h"
 #include "Random.h"
+#include "HungarianMethod.h"
 
 // naive O(VE) algorithm with greedy preprocessing
 class BipartiteMatching {
@@ -77,6 +78,59 @@ public:
             }
         }
         return matching;
+    }
+};
+
+// O(V^3) by reduction to Hungarian method
+class WeightedBipartiteMatching {
+private:
+    vii mwbm;
+    ll maxWeight = 0;
+public:
+    // call with adjacency list (with positive weights) and size of first partition
+    WeightedBipartiteMatching(vvill &adjList, int n) {
+        int m = adjList.size() - n;
+        int ma = std::max(n, m);
+        // default weight is zero
+        ll def = 0;
+        vvll profits(ma, vll(ma, neg));
+        REP(i, n) {
+            FOREACH(it, adjList[i]) {
+                int j = it->first - n;
+                ll w = it->second;
+                // first dimension of profit should be the larger partition
+                if (n >= m) {
+                    profits[i][j] = w;
+                }
+                else {
+                    profits[j][i] = w;
+                }
+            }
+        }
+        HungarianMethod hm(profits);
+        vi match = hm.getMatching();
+
+        REP(i, ma) {
+            int j = match[i];
+            // do not take dummy edges
+            if (profits[i][j] != def) {
+                maxWeight += profits[i][j];
+                if (n >= m) {
+                    mwbm.push_back(ii(i, n + j));
+                }
+                else {
+                    mwbm.push_back(ii(j, n+i));
+                }
+            }
+        }
+    }
+
+    ll getMatchingWeight() {
+        return maxWeight;
+    }
+
+    vii getMatching() {
+        return mwbm;
     }
 };
 

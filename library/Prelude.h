@@ -23,6 +23,7 @@ typedef long double ld;
 
 typedef std::pair<int, int> ii;
 typedef std::pair<ll, ll> llll;
+typedef std::pair<int, ll> ill;
 typedef std::pair<double, double> dd;
 
 typedef std::vector<int> vi;
@@ -30,6 +31,8 @@ typedef std::vector<ii> vii;
 typedef std::vector<vi> vvi;
 typedef std::vector<vvi> vvvi;
 typedef std::vector<vii> vvii;
+typedef std::vector<ill> vill;
+typedef std::vector<vill> vvill;
 
 typedef std::vector<bool> vb;
 
