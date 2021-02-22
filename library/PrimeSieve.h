@@ -43,6 +43,29 @@ public:
         return primes;
     }
 
+    mii getPrimeFactors(ll a) {
+        mii res;
+        ll c = a;
+        FOREACH(it, primes) {
+            ll p = *it;
+            if (p*p > c) { break; }
+            while (a % p == 0) {
+                if (res.find(p) != res.end()) {
+                    res[p]++;
+                }
+                else {
+                    res[p] = 1;
+                }
+                a /= p;
+            }
+            if (a == 1) { break; }
+        }
+        if (a != 1) {
+            res[a] = 1;
+        }
+        return res;
+    }
+
     // n can be up to p^2 where p is the largest prime sieved
     bool isPrime(ll n) {
         if (n <= sieveSize) {
