@@ -19,6 +19,7 @@
 #include <sstream>
 
 typedef long long ll;
+typedef unsigned long long ull;
 typedef long double ld;
 
 typedef std::pair<int, int> ii;
@@ -55,14 +56,13 @@ typedef std::set<ll> sll;
 
 typedef std::map<int, int> mii;
 typedef std::map<char, int> mci;
-typedef std::map<ll, ll> mllll;
-typedef std::map<ss, int> mssi;
 
 typedef std::queue<int> qi;
 
 typedef std::vector<std::pair<int, ii>> EdgeList;
 
 #define REP(i,n) for(int i=0;i<n;++i)
+#define DEBUG(s,a) (s) << ": " << (a) << " " <<
 #define REPLL(l,n) for(ll l=0;l<n;++l)
 #define FOR(i,s,n) for(int i=s;i<=n;++i)
 #define FOREACH(it,a) for(auto it=a.begin(); it != a.end(); ++it)
