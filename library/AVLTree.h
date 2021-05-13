@@ -9,10 +9,10 @@ struct vertex {
     int height;
     int elems;
 };
-// AVL tree with order statistics
+// AVL tree with order statistics for positive elements
 class AVLTree {
 public:
-    void insert(ll v) { root = insert(root, v); }
+    void insert(ll v) { assert(v >= 0); root = insert(root, v); }
     void remove(ll v) { root = remove(root, v); }
     bool search(ll v) { return search(root, v) != NULL; }
     ll successor(ll v) {
@@ -53,7 +53,7 @@ private:
         vec.push_back(T->key);
         inorder(T->right, vec);
     }
-    int successor(vertex* T) {
+    ll successor(vertex* T) {
         if (T->right != NULL)
             return findMin(T->right);
         else {
@@ -66,7 +66,7 @@ private:
             return par == NULL ? -1 : par->key;
         }
     }
-    int predecessor(vertex* T) {
+    ll predecessor(vertex* T) {
         if (T->left != NULL)
             return findMax(T->left);
         else {
@@ -79,12 +79,12 @@ private:
             return par == NULL ? -1 : par->key;
         }
     }
-    int findMin(vertex* T) {
+    ll findMin(vertex* T) {
         if (T == NULL) return -1;
         else if (T->left == NULL) return T->key;
         else return findMin(T->left);
     }
-    int findMax(vertex* T) {
+    ll findMax(vertex* T) {
         if (T == NULL) return -1;
         else if (T->right == NULL) return T->key;
         else return findMax(T->right);
