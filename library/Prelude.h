@@ -62,7 +62,8 @@ typedef std::queue<int> qi;
 typedef std::vector<std::pair<int, ii>> EdgeList;
 
 #define REP(i,n) for(int i=0;i<n;++i)
-#define DEBUG(s,a) (s) << ": " << (a) << " " <<
+#define DEBUG(a) #a << ": " << (a) << " " <<
+#define ENDL "\n"
 #define REPLL(l,n) for(ll l=0;l<n;++l)
 #define FOR(i,s,n) for(int i=s;i<=n;++i)
 #define FOREACH(it,a) for(auto it=a.begin(); it != a.end(); ++it)

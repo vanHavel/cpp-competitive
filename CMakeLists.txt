@@ -8,4 +8,5 @@ add_executable(testrunner testrunner/main.cpp ${HEADERS} library/MinSegmentTree.
 
 ADD_DEFINITIONS(-std=c++17)
 ADD_DEFINITIONS(-O3)
-
+ADD_DEFINITIONS(-Wshadow)
+ADD_DEFINITIONS(-Wall)
