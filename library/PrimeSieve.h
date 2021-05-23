@@ -71,7 +71,7 @@ public:
         if (n <= sieveSize) {
             return prime[n];
         }
-        for (int i = 0; i < (int) primes.size(); ++i) {
+        for (int i = 0; i < (int) primes.size() && (ll) primes[i] * (ll) primes[i] <= n; ++i) {
             if (n % primes[i] == 0) { return false; }
         }
         return true;
