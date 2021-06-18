@@ -52,6 +52,7 @@ private:
     }
 
 public:
+    MinSegmentTree() {}
     MinSegmentTree(vi &_A) {
         A = _A;
         n = (int) A.size();

@@ -2,9 +2,11 @@
 
 class %ClassName% {
 public:
-    int cas = 0;
     void solve(std::istream& in, std::ostream& out) {
-        cas++;
-        out << "Case #" << cas << ": ";
+        int t;
+        in >> t;
+        REP(caseNo, t) {
+
+        }
     }
 };

@@ -9,6 +9,9 @@
 
 class SuffixArray {
 private:
+    // for bigger strings, you can replace the arrays with vectors
+    // each vector must have size n+1 (if original string has length n)
+    // also c must have size at least 300
     const static int MAX_N = 100010;
 
     // for suffix array
@@ -26,7 +29,7 @@ private:
 
     void countingSort(int k) {
         int maxi = std::max(300, length);
-        REP(i, MAX_N) {
+        REP(i, maxi) {
             c[i] = 0;
         }
         // compute counts
