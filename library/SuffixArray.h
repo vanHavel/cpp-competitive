@@ -9,23 +9,19 @@
 
 class SuffixArray {
 private:
-    // for bigger strings, you can replace the arrays with vectors
-    // each vector must have size n+1 (if original string has length n)
-    // also c must have size at least 300
-    const static int MAX_N = 100010;
 
     // for suffix array
-    char text[MAX_N]; // original text with '$' at end (i use tab here)
+    vc text; // original text with '$' at end (i use tab here)
     int length; // length (including '$')
     int lengthOfFirst; // length of first string if there are two
-    int rank[MAX_N], tempRank[MAX_N];
-    int sa[MAX_N], tempSa[MAX_N];
-    int c[MAX_N];
+    vi rank, tempRank;
+    vi sa, tempSa;
+    vi c;
 
     // for lcp between consecutive suffixes
-    int lcp[MAX_N];
-    int plcp[MAX_N];
-    int phi[MAX_N];
+    vi lcp;
+    vi plcp;
+    vi phi;
 
     void countingSort(int k) {
         int maxi = std::max(300, length);
@@ -78,13 +74,13 @@ private:
     void computeLCP() {
         // store index of previous suffix
         phi[sa[0]] = -1;
-        for (int i = 0; i < length; ++i) {
+        for (int i = 1; i < length; ++i) {
             phi[sa[i]] = sa[i-1];
         }
         // compute plcp
         for (int i = 0, L = 0; i < length; ++i) {
             if (phi[i] == -1) {plcp[i] = 0; continue; }
-            while (text[i + L] == text[phi[i] + L]) { L++; }
+            while (i + L < length && phi[i] + L < length && text[i + L] == text[phi[i] + L]) { L++; }
             plcp[i] = L;
             L = std::max(L-1, 0);
         }
@@ -106,23 +102,28 @@ public:
     // compute suffix array in O(n log n)
     SuffixArray(std::string textString) {
         int n = textString.size();
+        text = vc(n+1);
         REP(i, n) {
             text[i] = textString[i];
         }
         text[n++] = 13;
         length = lengthOfFirst = n;
+        sa = vi(length), tempSa = vi(length), rank = vi(length), tempRank = vi(length);
+        c = vi(std::max(300, length));
         constructSuffixArray();
+        lcp = vi(length), plcp = vi(length), phi = vi(length);
         computeLCP();
     }
 
     // compute suffix array from two strings for longest common substring
     SuffixArray(std::string s1, std::string s2) {
         int n = s1.size();
+        int m = s2.size();
+        text = vc(n+m+1);
         REP(i, n) {
             text[i] = s1[i];
         }
         text[n++] = 11;
-        int m = s2.size();
         REP(i, m) {
             text[n+i] = s2[i];
         }
@@ -130,7 +131,10 @@ public:
         m++;
         length = n + m;
         lengthOfFirst = n;
+        sa = vi(length), tempSa = vi(length), rank = vi(length), tempRank = vi(length);
+        c = vi(std::max(300, length));
         constructSuffixArray();
+        lcp = vi(length), plcp = vi(length), phi = vi(length);
         computeLCP();
     }
 
