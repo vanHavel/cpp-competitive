@@ -5,7 +5,7 @@
 #ifndef SUMFENWICKTREE_H
 #define SUMFENWICKTREE_H
 
-#include "prelude.h"
+#include "Prelude.h"
 
 #define lsb(i) ((i)&(-(i)))
 
@@ -45,4 +45,4 @@ public:
     }
 };
 
-#endif SUMFENWICKTREE_H
+#endif //SUMFENWICKTREE_H

@@ -68,6 +68,10 @@ public:
     int distance(int v, int u) const {
         return heights[u] + heights[v] - 2 * heights[lca(v, u)];
     }
+
+    int parent(int v) const {
+        return parents[v][0];
+    }
 };
 
 

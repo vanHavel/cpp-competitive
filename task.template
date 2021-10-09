@@ -6,7 +6,7 @@ public:
         int t;
         in >> t;
         REP(caseNo, t) {
-
+            out << "Case #" << caseNo + 1 << ": ";
         }
     }
 };
