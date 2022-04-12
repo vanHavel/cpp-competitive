@@ -21,6 +21,15 @@ std::function<int ()> intRangeMt(int min, int max) {
     return rng;
 }
 
+// safely generates random lls in range [min, max] (using application operator)
+std::function<int ()> llRangeMt(ll min, ll max) {
+    auto rng = std::bind(
+            std::uniform_int_distribution<ll>(min, max),
+            std::mt19937(std::chrono::steady_clock::now().time_since_epoch().count())
+    );
+    return rng;
+}
+
 // seed rand with time
 void seedRand() {
     std::srand(std::time(nullptr));
