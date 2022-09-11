@@ -28,6 +28,22 @@ private:
         }
     }
 
+    vll backtrack(vii const &factors, int from) {
+        if (from == factors.size()) {
+            return vll {1};
+        }
+        vll res = backtrack(factors, from+1);
+        int recN = res.size();
+        auto [factor, count] = factors[from];
+        for (ll acc = factor, power = 1; power <= count; acc *= factor, power++) {
+            REP(i, recN) {
+                res.push_back(res[i] * acc);
+            }
+        }
+        return res;
+    }
+
+
 public:
     // this works on the stack for upper bounds up to 10^7, otherwise we need heap allocation
     PrimeSieve(ll upperBound) {
@@ -64,6 +80,13 @@ public:
             res[a] = 1;
         }
         return res;
+    }
+
+    // does not return in sorted order
+    vll getDivisors(ll a) {
+        mii factorMap = getPrimeFactors(a);
+        vii factorVec(factorMap.begin(), factorMap.end());
+        return backtrack(factorVec, 0);
     }
 
     // n can be up to p^2 where p is the largest prime sieved
