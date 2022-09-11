@@ -7,27 +7,31 @@
 
 #include "Prelude.h"
 
+typedef std::pair<ll, int> lli;
+
 class Dijkstra {
 private:
-    vi distances, parents;
-    // ii: destination and weight
-    vvii adjList;
-    const int BILLION = 1000000000;
+    vll distances;
+    vi parents;
+    // ill: destination and weight
+    vvill adjList;
+    const ll DIJK_INF = 1'000'000'000'000'000'000;
 public:
-    Dijkstra(vvii &_adjList) {
+    Dijkstra(vvill &_adjList) {
         adjList = _adjList;
     }
     void computeShortestPaths(int s) {
         int n = adjList.size();
-        distances.assign(n, BILLION); distances[s] = 0;
+        distances.assign(n, DIJK_INF); distances[s] = 0;
         parents.assign(n, -1); parents[s] = s;
         // ii: cost and destination
-        std::priority_queue<ii, std::vector<ii>, std::greater<ii>> pq;
+        std::priority_queue<lli, std::vector<lli>, std::greater<lli>> pq;
         pq.push(std::make_pair(0, s));
 
         while (!pq.empty()) {
-            ii front = pq.top(); pq.pop();
-            int d = front.first, v = front.second;
+            auto front = pq.top(); pq.pop();
+            auto d = front.first;
+            auto v = front.second;
             if (d > distances[v]) { continue; }
             for (int j = 0; j < (int) adjList[v].size(); ++j) {
                 ii u = adjList[v][j];
@@ -39,7 +43,7 @@ public:
             }
         }
     }
-    vi getDistances() {
+    vll getDistances() {
         return distances;
     }
     vi getParents() {
@@ -47,4 +51,4 @@ public:
     }
 };
 
-#endif DIJKSTRA_H
+#endif //DIJKSTRA_H

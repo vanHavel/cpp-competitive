@@ -27,6 +27,10 @@ ll gcd(ll a, ll b) {
     return gcd(b, a % b);
 }
 
+ll lcm(ll a, ll b) {
+    return a / gcd(a, b) * b;
+}
+
 // find x with x % m1 = a1, x % m2 = a2. m1 and m2 must be coprime
 // if m1*m2 > 10^9: risk of integer overflow
 ll crt(ll m1, ll a1, ll m2, ll a2) {
@@ -42,7 +46,8 @@ ll crt(ll m1, ll a1, ll m2, ll a2) {
     return res;
 }
 
-// attempt crt on x % a_i = m_i with moduli not coprime. Returns -1 on no solution
+// attempt crt on x % m_i = a_i with moduli not coprime. Returns -1 on no solution
+// has a solution if a1 % d == a2 % d for d = gcd(m1, m2)
 // if lcm(m1, m2) > 10^9: risk of integer overflow
 ll generalCrt(ll m1, ll a1, ll m2, ll a2) {
     auto [d, x, y] = extendedEuclid(m1, m2);
