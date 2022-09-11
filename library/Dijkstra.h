@@ -24,7 +24,7 @@ public:
         int n = adjList.size();
         distances.assign(n, DIJK_INF); distances[s] = 0;
         parents.assign(n, -1); parents[s] = s;
-        // ii: cost and destination
+        // lli: cost and destination
         std::priority_queue<lli, std::vector<lli>, std::greater<lli>> pq;
         pq.push(std::make_pair(0, s));
 
@@ -34,7 +34,7 @@ public:
             auto v = front.second;
             if (d > distances[v]) { continue; }
             for (int j = 0; j < (int) adjList[v].size(); ++j) {
-                ii u = adjList[v][j];
+                auto u = adjList[v][j];
                 if (distances[v] + u.second < distances[u.first]) {
                     distances[u.first] = distances[v] + u.second;
                     parents[u.first] = v;
