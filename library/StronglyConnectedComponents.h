@@ -60,6 +60,23 @@ public:
     vvi getSCCs() {
         return scc;
     }
+
+    vi getComponentSizes() {
+        vi sizes(scc.size());
+        REP(i, scc.size()) {
+            sizes[i] = scc[i].size();
+        }
+        return sizes;
+    }
+
+    vi getComponentIndices() {
+        vi indices(adjList.size());
+        REP(i, scc.size()) {
+            for (int v : scc[i]) {
+                indices[v] = i;
+            }
+        }
+    }
 };
 
 
