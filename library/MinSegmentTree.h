@@ -68,6 +68,10 @@ public:
         A[i] = val;
         update(1, 0, n-1, i);
     }
+
+    int get(int i) {
+        return A[i];
+    }
 };
 
 #endif //SEGMENTTREE_H
