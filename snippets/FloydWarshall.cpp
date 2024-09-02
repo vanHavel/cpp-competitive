@@ -5,7 +5,7 @@
 #include "../library/Prelude.h"
 
 int n;
-// initialize to weights and 1B for non-edges
+// initialize to weights and 1B for non-edges and 0 for i == j
 vvi adjMatrix;
 // initialize parents[i][j] to i if edge is there, or -1 if no edge there
 vvi parents;
