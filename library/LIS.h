@@ -11,7 +11,7 @@ class LIS {
 public:
     vi dp;
     vi prev;
-    LIS(vll const &A) {
+    LIS(vll const &A, bool strict = true) {
         int n = (int) A.size();
         // dp[i] = index of smallest element that ends an increasing subsequence of length i
         dp = vi();
@@ -23,7 +23,7 @@ public:
             int hi = (int) dp.size();
             while (lo < hi) {
                 int mid = (lo + hi) / 2;
-                if (A[dp[mid]] < A[i]) { lo = mid + 1; }
+                if (A[dp[mid]] < A[i] || (!strict && A[dp[mid]] == A[i])) { lo = mid + 1; }
                 else { hi = mid; }
             }
             if (lo > 0) { prev[i] = dp[lo - 1]; }
@@ -38,9 +38,9 @@ public:
     }
 
     // return the indices of the longest increasing subsequence
-    vll seq() {
+    vi seq() {
         int n = (int) dp.size();
-        vll res(n);
+        vi res(n);
         int cur = dp[n-1];
         for (int i = n - 1; i >= 0; i--) {
             res[i] = cur;
