@@ -91,6 +91,10 @@ public:
         updateRange(1, 0, n-1, i, j, diff);
     }
 
+    ll get(int i) {
+        return rangeSumQuery(i, i);
+    }
+
 };
 
 #endif
